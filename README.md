@@ -1,6 +1,8 @@
 # dict
 
-Offline English dictionary in your terminal, powered by [Webster's Unabridged](https://github.com/adambom/dictionary) and [fzf](https://github.com/junegunn/fzf).
+Offline English dictionary in your terminal, powered by [Webster's
+Unabridged](https://github.com/adambom/dictionary) and
+[fzf](https://github.com/junegunn/fzf).
 
 ## Setup
 
