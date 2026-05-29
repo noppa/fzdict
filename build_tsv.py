@@ -13,6 +13,7 @@ import re
 import sys
 
 HEADER_RE = re.compile(r'^[A-Z][A-Z\s\-_]*$')
+NUMBERED_RE = re.compile(r'^\d+\.\s')
 
 
 def clean(text: str) -> str:
@@ -25,15 +26,17 @@ def parse_dictionary(txt_path: str) -> dict:
 
     dictionary: dict[str, str] = {}
     word: str | None = None
-    defining = False
+    defining = False   # Defn: mode — stops collecting at blank line
+    numbered = False   # numbered-def mode — stops only at next header
     defn_parts: list[str] = []
 
     def save() -> None:
-        nonlocal word, defining, defn_parts
+        nonlocal word, defining, numbered, defn_parts
         if word is not None and defn_parts:
             dictionary[word] = ' '.join(defn_parts)
         word = None
         defining = False
+        numbered = False
         defn_parts = []
 
     for line in lines:
@@ -48,16 +51,26 @@ def parse_dictionary(txt_path: str) -> dict:
         if stripped.startswith('Defn:'):
             if word is not None:
                 defining = True
+                numbered = False
                 rest = stripped[len('Defn:'):].strip()
                 if rest:
                     defn_parts.append(rest)
             continue
 
-        if stripped == '' and defining:
-            save()
+        # Numbered definitions (1. 2. 3.) — only enter this mode when we
+        # haven't already started a Defn: block, to avoid double-collecting.
+        if NUMBERED_RE.match(stripped) and word is not None and not defining:
+            numbered = True
+            defn_parts.append(stripped)
             continue
 
-        if defining and word is not None and stripped:
+        # Defn: mode stops at blank lines; numbered mode skips them.
+        if stripped == '':
+            if defining:
+                save()
+            continue
+
+        if (defining or numbered) and word is not None:
             defn_parts.append(stripped)
 
     save()
