@@ -8,7 +8,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DICT_TSV="${SCRIPT_DIR}/dictionary.tsv"
-DICT_JSON="${SCRIPT_DIR}/webster/dictionary.json"
+DICT_SRC="${SCRIPT_DIR}/webster/dictionary.txt"
 
 # ── Check dependencies ───────────────────────────────────────────────────────
 
@@ -26,15 +26,15 @@ check_dep python3 "brew install python3 (macOS) / sudo apt install python3 (Debi
 # ── Generate TSV if missing ──────────────────────────────────────────────────
 
 if [[ ! -f "$DICT_TSV" ]]; then
-    if [[ ! -f "$DICT_JSON" ]]; then
-        echo "Error: ${DICT_JSON} not found." >&2
+    if [[ ! -f "$DICT_SRC" ]]; then
+        echo "Error: ${DICT_SRC} not found." >&2
         echo "Did you initialise the submodule? Run:" >&2
         echo "  git submodule update --init" >&2
         exit 1
     fi
 
     echo "Generating dictionary.tsv from submodule (one-time)..."
-    python3 "${SCRIPT_DIR}/build_tsv.py" "$DICT_JSON" "$DICT_TSV"
+    python3 "${SCRIPT_DIR}/build_tsv.py" "$DICT_SRC" "$DICT_TSV"
     echo "Done."
 fi
 
