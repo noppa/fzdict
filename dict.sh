@@ -40,21 +40,17 @@ fi
 
 # ── Direct lookup: dict.sh <word> ────────────────────────────────────────────
 
+query=""
 if [[ -n "$1" ]]; then
     word="${1,,}"
     result=$(grep -i "^${word}"$'\t' "$DICT_TSV" || true)
 
-    if [[ -z "$result" ]]; then
-        echo "No exact match for '${word}'. Close matches:" >&2
-        grep -i "^${word}" "$DICT_TSV" 2>/dev/null \
-            | head -10 \
-            | awk -F'\t' '{printf "  %-20s %s\n", $1, substr($2, 1, 80)}' \
-            || echo "  (none found)" >&2
-        exit 1
+    if [[ -n "$result" ]]; then
+        awk -F'\t' '{printf "\033[1m%s\033[0m\n%s\n", $1, $2}' <<< "$result"
+        exit 0
     fi
 
-    awk -F'\t' '{printf "\033[1m%s\033[0m\n%s\n", $1, $2}' <<< "$result"
-    exit 0
+    query="$word"
 fi
 
 # ── Interactive fuzzy search ─────────────────────────────────────────────────
@@ -63,8 +59,9 @@ selected=$(
     fzf \
         --delimiter='\t' \
         --with-nth=1 \
-        --preview='awk -F"\t" "{print \$2}" <<< {}' \
-        --preview-window='down:4:wrap' \
+        --query="$query" \
+        --preview='printf "%s\n" {2}' \
+        --preview-window='right:60%:wrap' \
         --prompt='dict> ' \
         --height=50% \
         --layout=reverse \
