@@ -66,8 +66,15 @@ selected=$(
         --height=50% \
         --layout=reverse \
         --info=inline \
-        --bind='ctrl-y:execute-silent(echo {1} | tr -d "\n" | pbcopy 2>/dev/null || echo {1} | tr -d "\n" | xclip -selection clipboard 2>/dev/null)+abort' \
+        --bind='ctrl-y:execute-silent(echo {1} | tr -d "\n" | pbcopy 2>/dev/null || echo {1} | tr -d "\n" | wl-copy 2>/dev/null || echo {1} | tr -d "\n" | xclip -selection clipboard 2>/dev/null)+abort' \
         < "$DICT_TSV"
 )
 
-[[ -n "$selected" ]] && awk -F'\t' '{printf "\033[1m%s\033[0m\n%s\n", $1, $2}' <<< "$selected"
+if [[ -n "$selected" ]]; then
+    selected_word=$(awk -F'\t' '{print $1}' <<< "$selected")
+    printf '%s' "$selected_word" | pbcopy 2>/dev/null \
+        || printf '%s' "$selected_word" | wl-copy 2>/dev/null \
+        || printf '%s' "$selected_word" | xclip -selection clipboard 2>/dev/null \
+        || true
+    awk -F'\t' '{printf "\033[1m%s\033[0m\n%s\n", $1, $2}' <<< "$selected"
+fi
