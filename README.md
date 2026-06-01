@@ -4,6 +4,8 @@ Offline English dictionary in your terminal, powered by [Webster's
 Unabridged](https://github.com/adambom/dictionary) and
 [fzf](https://github.com/junegunn/fzf).
 
+![demo](demo.gif)
+
 ## Setup
 
 ```bash
@@ -33,6 +35,12 @@ The first time you run `fzdict.sh` it generates `dictionary.tsv` from the submod
 
 In interactive mode, `Ctrl+Y` copies the selected word to your clipboard.
 
+To use `fzdict` from anywhere, symlink the script into your PATH:
+
+```bash
+sudo ln -s $(pwd)/fzdict.sh /usr/bin/fzdict
+```
+
 ## Repo structure
 
 ```
@@ -50,3 +58,9 @@ In interactive mode, `Ctrl+Y` copies the selected word to your clipboard.
     path = webster
     url = https://github.com/adambom/dictionary
 ```
+
+## AI disclosure
+
+This project was built with heavy use of AI tools, mostly Claude.  
+The shell script, Python build tooling, and most of the debugging were done
+through an AI-assisted coding sessions.
