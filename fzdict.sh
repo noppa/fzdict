@@ -6,7 +6,7 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 DICT_TSV="${SCRIPT_DIR}/dictionary.tsv"
 DICT_SRC="${SCRIPT_DIR}/webster/dictionary.txt"
 
