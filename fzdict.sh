@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# dict.sh — Fuzzy offline English dictionary
+# fzdict.sh — Fuzzy offline English dictionary
 # Usage:
-#   ./dict.sh           — interactive fuzzy search
-#   ./dict.sh <word>    — direct lookup (fuzzy fallback on no match)
+#   ./fzdict.sh           — interactive fuzzy search
+#   ./fzdict.sh <word>    — direct lookup (fuzzy fallback on no match)
 
 set -e
 
@@ -38,7 +38,7 @@ if [[ ! -f "$DICT_TSV" ]]; then
     echo "Done."
 fi
 
-# ── Direct lookup: dict.sh <word> ────────────────────────────────────────────
+# ── Direct lookup: fzdict.sh <word> ──────────────────────────────────────────
 
 query=""
 if [[ -n "$1" ]]; then

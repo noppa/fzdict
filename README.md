@@ -8,7 +8,7 @@ Unabridged](https://github.com/adambom/dictionary) and
 
 ```bash
 git clone --recurse-submodules <your-repo-url>
-chmod +x dict.sh
+chmod +x fzdict.sh
 ```
 
 If you already cloned without `--recurse-submodules`:
@@ -17,7 +17,7 @@ If you already cloned without `--recurse-submodules`:
 git submodule update --init
 ```
 
-The first time you run `dict.sh` it generates `dictionary.tsv` from the submodule. This is a one-time step.
+The first time you run `fzdict.sh` it generates `dictionary.tsv` from the submodule. This is a one-time step.
 
 ## Dependencies
 
@@ -27,8 +27,8 @@ The first time you run `dict.sh` it generates `dictionary.tsv` from the submodul
 ## Usage
 
 ```bash
-./dict.sh                # interactive fuzzy search
-./dict.sh <word>         # direct lookup (shows close matches if not found)
+./fzdict.sh                # interactive fuzzy search
+./fzdict.sh <word>         # direct lookup (shows close matches if not found)
 ```
 
 In interactive mode, `Ctrl+Y` copies the selected word to your clipboard.
@@ -37,7 +37,7 @@ In interactive mode, `Ctrl+Y` copies the selected word to your clipboard.
 
 ```
 .
-├── dict.sh           # main script
+├── fzdict.sh         # main script
 ├── build_tsv.py      # converts dictionary.json → dictionary.tsv
 ├── dictionary.tsv    # generated on first run, gitignored
 └── webster/          # submodule: adambom/dictionary
